@@ -108,10 +108,10 @@ tp_list:action("Inform others about this command", {}, "Sends a message to all c
 end)
 tp_list:divider("")
 
-players.add_command_hook(function(playerID, set)                                                                                                                                                                                                                                                                             --[[        '--'           ]]
-    if not menu.ref_by_rel_path(tp_list, PlayerName(playerID)):isValid() then
-        tp[playerID] = tp_list:action(PlayerName(playerID), {"tptocasino"}, 'Command: "tptocasino"', function()
-            menu.trigger_commands("casinotp"..PlayerName(playerID))
+players.add_command_hook(function(playerID, set)                                                                                                                                                                                                                                                                             --[[        _  _           ]]
+    if not menu.ref_by_rel_path(tp_list, PlayerName(playerID)):isValid() then                                                                                                                                                                                                                                                --[[       (.)(.)          ]]
+        tp[playerID] = tp_list:action(PlayerName(playerID), {"tptocasino"}, 'Command: "tptocasino"', function()                                                                                                                                                                                                              --[[      (.____.)         ]]
+            menu.trigger_commands("casinotp"..PlayerName(playerID))                                                                                                                                                                                                                                                          --[[        '--'           ]]
         end, nil, nil, COMMANDPERM_RUDE)
     end
 end)
