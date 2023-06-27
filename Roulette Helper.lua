@@ -95,9 +95,7 @@ end)
 tp_list = myroot:list("Teleport Players to Casino")
 
 myroot:divider("")
-credits = myroot:list("Credits")
 
-credits:hyperlink("hexarobi", "https://discord.com/channels/956618713157763072/1045070097401794611", "Inspired and steps from his post")
 
 tp_list:action("Redirect to Chat Commands", {},"You need to activate chat commands for others bevor they can use this.", function()
     commands:focus()
@@ -119,3 +117,11 @@ end)
 players.on_leave(function(playerID, name)
     tp[playerID]:delete()
 end)
+
+local misc_list = menu.list(menu.my_root(), "Misc")
+misc_list:readonly("Made by ", "MrWalll")
+misc_list:hyperlink("GitHub", "https://github.com/MrWalll", "")
+
+credits = misc_list:list("Credits")
+
+credits:hyperlink("hexarobi", "https://discord.com/channels/956618713157763072/1045070097401794611", "Inspired and steps from his post")
