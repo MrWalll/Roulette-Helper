@@ -12,6 +12,7 @@ local send_to = 1
 local tp = {}
 local rigOutcome = menu.ref_by_path("Online>Quick Progress>Casino>Roulette Outcome")
 local commands = menu.ref_by_path("Online>Chat>Commands>Enabled For Me")
+local antiafk = menu.ref_by_path("Online>Enhancements>Disable Idle/AFK Kick")
 
 local steps = {
     [0] = "Casino rigging is one of the most efficient ways to generate money for other players. It's less risky than money drops, and scales to more people than heists. This method can make up to 14mi per hour per player, for up to 20 players at a time.",
@@ -54,7 +55,7 @@ send_step = myroot:action("Send", {"sendStep"}, "Sends the current step to the c
 end)
 
 myroot:divider("")
-RigRoulette = myroot:action("Rig Roulette Outcome", {}, "This is just a helper so you dont have to do it on your own\nRigs Roulette Outcome to 1", function()
+RigRoulette = myroot:action("Rig Roulette Outcome", {}, "This is just a helper so you dont have to do it on your own\nRigs Roulette Outcome to 1 using stand", function()
     if menu.get_menu_name(RigRoulette) == "Rig Roulette Outcome" then
         menu.set_value(rigOutcome, "1")
         menu.set_menu_name(RigRoulette, "Rig Roulette Outcome [Active]")
@@ -91,6 +92,14 @@ end,function()
         rigOutcome.value = "-1"
     end
 end)
+
+antiafktoggle = myroot:toggle("Disable Idle/AFK kick", {}, "This button is in sync with the one already in stand. Just made it easier to access", function(toggle)
+    if toggle then
+        antiafk.value = toggle
+    else
+        antiafk.value = false
+    end
+end, antiafk.value)
 
 tp_list = myroot:list("Teleport Players to Casino")
 
