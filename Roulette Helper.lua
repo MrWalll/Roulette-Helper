@@ -1,8 +1,8 @@
 --[[
     This script was created by MrWalll
+    https://github.com/MrWalll/Roulette-Helper
 ]]
 
-util.require_natives(1672190175)
 util.keep_running()
 
 local myroot = menu.my_root()
