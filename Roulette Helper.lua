@@ -1,6 +1,5 @@
 --[[
     This script was created by MrWalll
-    https://github.com/MrWalll/Roulette-Helper
 ]]
 
 util.keep_running()
