@@ -13,12 +13,10 @@ local tp = {}
 local rigOutcome = menu.ref_by_path("Online>Quick Progress>Casino>Roulette Outcome")
 local commands = menu.ref_by_path("Online>Chat>Commands>Enabled For Me")
 
---have the table automaticly lose after specific time so noone gets cut off by the casino (eine runde 1min)
-
 local steps = {
     [0] = "Casino rigging is one of the most efficient ways to generate money for other players. It's less risky than money drops, and scales to more people than heists. This method can make up to 14mi per hour per player, for up to 20 players at a time.",
     [1] = "Enable roulette rigging with Online > Quick Progress > Casino > Roulette Outcome > 1. \nThis works on all tables at once.",
-    [2] = "You must remain inside the Casino to rig the table games, if you leave they will no longer be rigged. Make sure to disable idle/afk kicks.",
+    [2] = "You must remain inside the Casino to rig the table games, if you leave they will no longer be rigged.",
     [3] = "Each player that wants to play must take a seat at a roulette table. The purple High Limit tables pay out 10x more than green tables. For VIP access players must either own a penthouse, or join an org of someone who owns a penthouse.",
     [4] = "Press TAB key to maximize bet amounts per click.",
     [5] = "Click on the red 1 space to bet 5k (be careful to click in the center of the square and not the surrounding lines)",
@@ -26,6 +24,8 @@ local steps = {
     [7] = "When the spin comes up red 1, each player will win 330k on a 55k bet.",
     [8] = "If a player wins 13 bets in a row, then the casino will cut them off for one hour. To avoid this, place a small losing bet every 10 spins or every $3mil."
     }
+
+myroot:divider(SCRIPT_NAME)
 
 Steps_Slider = myroot:slider("Steps", {"sliderSteps"}, ""..steps[0], 0, 8, 0, 1, function(value)
     active_step = value
@@ -37,7 +37,7 @@ myroot:list_select("Send to", {"sliderSendto"}, "Click to apply", {"All", "Team/
 end)
 
 send_step = myroot:action("Send", {"sendStep"}, "Sends the current step to the chosen chat.", function(click_type)
-    menu.show_warning(myroot, click_type, "You should not send step 1 and 2 to others. It will not make any sence for them!", function()
+    menu.show_warning(myroot, click_type, "You should not send step 1 and 2 to others. It will not make any sense for them!", function()
         switch send_to do
             case 1:
                 chat.send_message(steps[active_step], false, true, true)
@@ -64,27 +64,31 @@ RigRoulette = myroot:action("Rig Roulette Outcome", {}, "This is just a helper s
     end
 end)
 
-autoLose = myroot:toggle_loop("Makes everyone lose every 10min", {}, "Why every 10min? Because one roulette round is about 1min long (from setting bet to receving win) times 10 makes it 10 wins so you neet to lose once to not get cut off.", function(toggle)
+autoLose = myroot:toggle_loop("Auto Rig", {}, "Rigs the Roulette to lose ever 10min for one min. \nWhy every 10min? Because one roulette round is about 1min long (from setting bet to receving win) times 10 makes it 10 wins so you need to lose once, to not get cut off by the casino.", function(toggle)
     local startTime = os.time()
 
     while autoLose.value do
         local currentTime = os.time()
         local timePast = currentTime - startTime
-        
-        if timePast >= 6 then
-            util.toast("60sec ")
+
+        if timePast >= 600 then --600 == 10min
             if rigOutcome.value == 1 then
-                rigOutcome.value = "35" --set outcome to 35 to lose 100%
-                util.toast("35")
-                util.yield(75*1000) -- wait one round
+                rigOutcome.value = "35" --set outcome to 35 to lose 100% of your bet
+                util.yield(65*1000) -- wait one round
                 rigOutcome.value = "1" --reset outcome to 1
-                util.toast("1")
             else
                 rigOutcome.value = "1"
             end
             startTime = os.time() --reset startTime for timePast
         end
         util.yield(10)
+    end
+end,function()
+    if RigRoulette.menu_name == "Rig Roulette Outcome [Active]" then
+        rigOutcome.value = "1"
+    end
+    if RigRoulette.menu_name == "Rig Roulette Outcome" then
+        rigOutcome.value = "-1"
     end
 end)
 
